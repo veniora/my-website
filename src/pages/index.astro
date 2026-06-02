@@ -1,20 +1,21 @@
 ---
-
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 ---
 
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
-    <a href="/">Home</a>
-    <a href="/about/">About</a>
-    <a href="/posts/">Posts</a>
-    <h1>My Astro Site</h1>
+    <Header />
+    <main>
+      <h2>Welcome to the website of {SITE_TITLE}</h2>
+      <p>We've got some work to do</p>
+    </main>
+    <Footer />
   </body>
 </html>
