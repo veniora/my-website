@@ -1,0 +1,25 @@
+---
+// Renders a small "Draft" marker. Drafts only ever reach the browser in
+// `astro dev`, so this badge never appears on the production site.
+interface Props {
+	draft?: boolean;
+}
+const { draft = false } = Astro.props;
+---
+
+{draft && <span class="draft-badge">Draft</span>}
+
+<style>
+	.draft-badge {
+		display: inline-block;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: #fff;
+		background: #c2410c;
+		padding: 0.1em 0.55em;
+		border-radius: 4px;
+		vertical-align: middle;
+	}
+</style>

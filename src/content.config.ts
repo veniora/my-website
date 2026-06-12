@@ -14,6 +14,10 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
+			// Topic tags, e.g. ["Politics", "Economics"]
+			tags: z.array(z.string()).default([]),
+			// Set to true to hide a post from the site while you work on it
+			draft: z.boolean().default(false),
 		}),
 });
 

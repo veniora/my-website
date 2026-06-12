@@ -1,0 +1,109 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import DraftBadge from "../../components/DraftBadge.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import Header from "../../components/Header.astro";
+import TagList from "../../components/TagList.astro";
+import { SITE_TITLE } from "../../consts";
+import { getAllTags, getPublishedPosts } from "../../utils/posts";
+
+const posts = await getPublishedPosts();
+const tags = await getAllTags();
+const description = "Everything I've written, newest first.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`${SITE_TITLE} | Articles`} description={description} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>Articles</h1>
+      <p class="lede">{description}</p>
+
+      {
+        tags.length > 0 && (
+          <div class="browse">
+            <span>Browse by topic:</span>
+            <TagList tags={tags} />
+          </div>
+        )
+      }
+
+      {
+        posts.length === 0 ? (
+          <p>No posts yet — check back soon.</p>
+        ) : (
+          <ul class="posts">
+            {posts.map((post) => (
+              <li>
+                <a href={`/articles/${post.id}/`}>
+                  <p class="date">
+                    <FormattedDate date={post.data.pubDate} />
+                    <DraftBadge draft={post.data.draft} />
+                  </p>
+                  <h2>{post.data.title}</h2>
+                  <p class="excerpt">{post.data.description}</p>
+                </a>
+                <TagList tags={post.data.tags} />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .lede {
+    color: rgb(var(--gray-dark));
+    margin-top: 0;
+  }
+  .browse {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6em;
+    margin: 1.5rem 0 2.5rem 0;
+  }
+  .browse span {
+    color: rgb(var(--gray));
+    font-size: 0.9rem;
+  }
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .posts li {
+    padding: 1.5rem 0;
+    border-top: 1px solid rgb(var(--gray-light));
+  }
+  .posts li a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .posts h2 {
+    margin: 0.2em 0;
+    font-size: 1.6rem;
+    color: rgb(var(--black));
+  }
+  .posts li a:hover h2 {
+    color: var(--accent);
+  }
+  .date {
+    margin: 0;
+    color: rgb(var(--gray));
+    font-size: 0.85rem;
+  }
+  .excerpt {
+    margin: 0.3em 0 0.8em 0;
+    color: rgb(var(--gray-dark));
+  }
+</style>

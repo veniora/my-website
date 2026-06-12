@@ -6,9 +6,20 @@ import HeaderLink from "./HeaderLink.astro";
 <header>
   <nav>
     <h2><a href="/">{SITE_TITLE}</a></h2>
-    <div class="internal-links">
+    <button
+      class="nav-toggle"
+      aria-label="Open menu"
+      aria-controls="primary-nav"
+      aria-expanded="false"
+    >
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <div class="internal-links" id="primary-nav">
       <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
+      <HeaderLink href="/articles">Articles</HeaderLink>
+      <HeaderLink href="/projects">Projects</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
     </div>
   </nav>
@@ -17,8 +28,8 @@ import HeaderLink from "./HeaderLink.astro";
   header {
     margin: 0;
     padding: 0 1em;
-    background: white;
-    box-shadow: 0 2px 8px rgba(var(--black), 5%);
+    background: rgb(var(--bg));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 10%);
   }
   h2 {
     margin: 0;
@@ -33,10 +44,17 @@ import HeaderLink from "./HeaderLink.astro";
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5em 1em;
+  }
+  .internal-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   nav a {
     padding: 1em 0.5em;
-    color: var(--black);
+    color: rgb(var(--black));
     border-bottom: 4px solid transparent;
     text-decoration: none;
   }
@@ -44,13 +62,83 @@ import HeaderLink from "./HeaderLink.astro";
     text-decoration: none;
     border-bottom-color: var(--accent);
   }
-  .social-links,
-  .social-links a {
-    display: flex;
+
+  /* Hamburger button — hidden on desktop */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
   }
+  .nav-toggle .bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    margin: 0 auto;
+    background: rgb(var(--black));
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  /* Animate bars into an X when open */
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
   @media (max-width: 720px) {
-    .social-links {
+    .nav-toggle {
+      display: flex;
+    }
+    /* Collapse the links into a full-width dropdown, hidden until opened */
+    .internal-links {
       display: none;
+      flex-direction: column;
+      width: 100%;
+      padding-bottom: 0.5em;
+    }
+    .nav-toggle[aria-expanded="true"] ~ .internal-links {
+      display: flex;
+    }
+    .internal-links a {
+      width: 100%;
+      padding: 0.6em 0.25em;
+      border-bottom: none;
+      border-left: 4px solid transparent;
+      padding-left: 0.5em;
+    }
+    .internal-links a.active {
+      border-bottom: none;
+      border-left-color: var(--accent);
     }
   }
 </style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+
+  function setOpen(open: boolean) {
+    toggle?.setAttribute("aria-expanded", String(open));
+    toggle?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    setOpen(!isOpen);
+  });
+
+  // Close the menu on Escape for keyboard users.
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+</script>

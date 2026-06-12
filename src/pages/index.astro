@@ -1,8 +1,15 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import DraftBadge from "../components/DraftBadge.astro";
 import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
+import TagList from "../components/TagList.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { getPublishedPosts } from "../utils/posts";
+
+const posts = await getPublishedPosts();
+const [featured, ...recent] = posts.slice(0, 5);
 ---
 
 <!doctype html>
@@ -13,9 +20,149 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
   <body>
     <Header />
     <main>
-      <h2>Welcome to the website of {SITE_TITLE}</h2>
-      <p>We've got some work to do</p>
+      <section class="intro">
+        <h1>Michael Janan</h1>
+        <p>
+          Essays and notes on politics, science fiction, economics, and the
+          ideas in between. Thanks for stopping by.
+        </p>
+      </section>
+
+      {
+        posts.length === 0 ? (
+          <p>No posts yet — check back soon.</p>
+        ) : (
+          <section class="feed">
+            <div class="feed-head">
+              <h2>Latest</h2>
+              <a href="/articles">All articles →</a>
+            </div>
+
+            {featured && (
+              <div class="featured">
+                <a class="featured-link" href={`/articles/${featured.id}/`}>
+                  <p class="date">
+                    <FormattedDate date={featured.data.pubDate} />
+                    <DraftBadge draft={featured.data.draft} />
+                  </p>
+                  <h3>{featured.data.title}</h3>
+                  <p class="excerpt">{featured.data.description}</p>
+                </a>
+                <div class="featured-tags">
+                  <TagList tags={featured.data.tags} />
+                </div>
+              </div>
+            )}
+
+            {recent.length > 0 && (
+              <ul class="more">
+                {recent.map((post) => (
+                  <li>
+                    <a href={`/articles/${post.id}/`}>
+                      <p class="date">
+                        <FormattedDate date={post.data.pubDate} />
+                        <DraftBadge draft={post.data.draft} />
+                      </p>
+                      <h4>{post.data.title}</h4>
+                      <p class="excerpt">{post.data.description}</p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )
+      }
     </main>
     <Footer />
   </body>
 </html>
+
+<style>
+  .intro {
+    margin-bottom: 3rem;
+  }
+  .intro h1 {
+    margin-bottom: 0.25em;
+  }
+  .intro p {
+    font-size: 1.15rem;
+    color: rgb(var(--gray-dark));
+    margin: 0;
+  }
+
+  .feed-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(var(--gray-light));
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .feed-head h2 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+  .feed-head a {
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+  .feed-head a:hover {
+    text-decoration: underline;
+  }
+
+  .date {
+    margin: 0;
+    color: rgb(var(--gray));
+    font-size: 0.85rem;
+  }
+  .excerpt {
+    margin: 0.4em 0 0 0;
+    color: rgb(var(--gray-dark));
+  }
+
+  .featured {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 12px;
+    transition: 0.2s ease;
+  }
+  .featured:hover {
+    box-shadow: var(--box-shadow);
+  }
+  .featured-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .featured h3 {
+    margin: 0.3em 0;
+    color: rgb(var(--black));
+  }
+  .featured-tags {
+    margin-top: 1rem;
+  }
+
+  .more {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .more li {
+    border-top: 1px solid rgb(var(--gray-light));
+  }
+  .more li a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 1.25rem 0;
+  }
+  .more h4 {
+    margin: 0.2em 0;
+    color: rgb(var(--black));
+  }
+  .more li a:hover h4 {
+    color: var(--accent);
+  }
+</style>

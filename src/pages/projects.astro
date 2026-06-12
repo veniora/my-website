@@ -1,0 +1,100 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_TITLE } from "../consts";
+
+// Edit this list to describe what you're building. Add or remove entries
+// freely — anything in this array is rendered below.
+const projects = [
+  {
+    name: "Example Project",
+    blurb:
+      "A short description of what this is, who it's for, and why you're building it. Replace this with something real.",
+    status: "In progress",
+    link: "",
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`${SITE_TITLE} | Projects`}
+      description="Things I'm building and working on."
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>Projects</h1>
+      <p class="lede">
+        A running list of what I'm building — apps, experiments, and other work
+        in progress.
+      </p>
+
+      <ul class="projects">
+        {
+          projects.map((project) => (
+            <li>
+              <div class="project-head">
+                <h2>
+                  {project.link ? (
+                    <a href={project.link}>{project.name}</a>
+                  ) : (
+                    project.name
+                  )}
+                </h2>
+                {project.status && (
+                  <span class="status">{project.status}</span>
+                )}
+              </div>
+              <p>{project.blurb}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .lede {
+    color: rgb(var(--gray-dark));
+    margin: 0 0 2.5rem 0;
+  }
+  .projects {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .projects li {
+    padding: 1.5rem 0;
+    border-top: 1px solid rgb(var(--gray-light));
+  }
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75em;
+    flex-wrap: wrap;
+  }
+  .projects h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  .status {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgb(var(--gray));
+    background: rgb(var(--gray-light));
+    padding: 0.2em 0.7em;
+    border-radius: 999px;
+  }
+  .projects p {
+    margin: 0.6em 0 0 0;
+    color: rgb(var(--gray-dark));
+  }
+</style>

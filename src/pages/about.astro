@@ -2,24 +2,54 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { CONTACT_EMAIL, SITE_TITLE } from "../consts";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={`${SITE_TITLE} | About`} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={`${SITE_TITLE} | About`}
+      description="About Michael Janan and how to get in touch."
+    />
   </head>
   <body>
     <Header />
     <main>
-      <h2>About Me</h2>
+      <h1>About</h1>
       <p>
-        Hi, I'm Michael. I'll build this out properly soon. I want a place to
-        share my thoughts where I can then discuss them with others. Got some
-        work to go!
+        Hi, I'm Michael. I write here about the things I keep coming back to —
+        politics, science fiction, economics, and the places where they
+        overlap. This is where I think out loud and, hopefully, start a few
+        conversations.
+      </p>
+      <p>
+        <!-- Replace this with a short professional bio: what you do, your
+             background, and what readers can expect from your writing. -->
+        I'm currently working on a handful of projects you can read about on the
+        <a href="/projects">projects</a> page.
+      </p>
+
+      <h2>Get in touch</h2>
+      <p>
+        The best way to reach me is by email. I read everything and try to
+        reply.
+      </p>
+      <p class="contact">
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
       </p>
     </main>
     <Footer />
   </body>
 </html>
+
+<style>
+  h2 {
+    margin-top: 2em;
+    font-size: 1.6rem;
+  }
+  .contact a {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+</style>
