@@ -1,14 +1,14 @@
 ---
 import BaseHead from "../../components/BaseHead.astro";
-import DraftBadge from "../../components/DraftBadge.astro";
 import Footer from "../../components/Footer.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import Header from "../../components/Header.astro";
 import TagList from "../../components/TagList.astro";
 import { SITE_TITLE } from "../../consts";
-import { getAllTags, getPublishedPosts } from "../../utils/posts";
+import { getAllTags, getDraftPosts, getPublishedPosts } from "../../utils/posts";
 
 const posts = await getPublishedPosts();
+const drafts = await getDraftPosts();
 const tags = await getAllTags();
 const description = "Everything I've written, newest first.";
 ---
@@ -22,6 +22,26 @@ const description = "Everything I've written, newest first.";
     <Header />
     <main>
       <h1>Essays</h1>
+
+      {
+        drafts.length > 0 && (
+          <section class="drafts-section">
+            <h2 class="drafts-heading">Drafts</h2>
+            <ul class="post-list">
+              {drafts.map((post) => (
+                <li>
+                  <time class="post-date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </time>
+                  <span class="post-title">
+                    <a href={`/drafts/${post.id}/`}>{post.data.title}</a>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
 
       {
         tags.length > 0 && (
@@ -44,7 +64,6 @@ const description = "Everything I've written, newest first.";
                 </time>
                 <span class="post-title">
                   <a href={`/essays/${post.id}/`}>{post.data.title}</a>
-                  <DraftBadge draft={post.data.draft} />
                 </span>
               </li>
             ))}
@@ -57,6 +76,18 @@ const description = "Everything I've written, newest first.";
 </html>
 
 <style>
+  .drafts-section {
+    margin-bottom: 3rem;
+  }
+  .drafts-heading {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(var(--gray));
+    margin: 0 0 0.5rem 0;
+  }
+
   .browse {
     display: flex;
     flex-wrap: wrap;

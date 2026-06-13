@@ -1,22 +1,18 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'essays'>;
+export type DraftPost = CollectionEntry<'drafts'>;
 
-/**
- * In `astro dev` we surface drafts so you can preview how they'll render.
- * Production builds (`astro build`) never include them.
- */
-const includeDrafts = import.meta.env.DEV;
-
-/**
- * Published posts, most recent first. Drafts are included only in dev
- * (see {@link includeDrafts}).
- */
 export async function getPublishedPosts(): Promise<Post[]> {
-	const posts = await getCollection(
-		'essays',
-		({ data }) => includeDrafts || !data.draft,
+	const posts = await getCollection('essays');
+	return posts.sort(
+		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 	);
+}
+
+export async function getDraftPosts(): Promise<DraftPost[]> {
+	if (!import.meta.env.DEV) return [];
+	const posts = await getCollection('drafts');
 	return posts.sort(
 		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 	);

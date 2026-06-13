@@ -11,8 +11,6 @@ pubDate: "Jun 12 2026"
 # heroImage: "./my-image.jpg"
 # Topics, used for the tag pages. Pick a few consistent ones.
 tags: ["Politics", "Economics"]
-# While true, the post is hidden from the live site. Set to false to publish.
-draft: true
 ---
 
 Write your opening here. The first paragraph is your hook — make the reader
@@ -34,7 +32,7 @@ Wrap up with a closing thought or a question to invite discussion.
 
 **How to use this template**
 
-1. Copy this file into `src/content/blog/` and rename it — the file name
-   becomes the URL, e.g. `moving-to-london.md` → `/articles/moving-to-london/`.
+1. Copy this file into `src/content/essay-drafts/` and rename it — the file
+   name becomes the URL slug, e.g. `moving-to-london.md` → `/essays/moving-to-london/`.
 2. Fill in the frontmatter above and write your post.
-3. Set `draft: false` when you're ready to publish.
+3. When ready to publish, drag the file into `src/content/essays/`.

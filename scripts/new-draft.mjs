@@ -1,14 +1,13 @@
 #!/usr/bin/env node
-// Scaffolds a new draft post in src/content/blog/ from a title.
+// Scaffolds a new draft post in src/content/essay-drafts/ from a title.
 //   npm run new -- "My Post Title"
-// The title is slugified into the filename (which becomes the URL), and the
-// post starts as a draft so it only shows up in `npm run dev`.
+// When ready to publish, drag the file into src/content/essays/.
 
 import { existsSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const BLOG_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'content', 'blog');
+const BLOG_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'content', 'essay-drafts');
 
 // A title is optional: `npm run new -- "My Post Title"` names the file from
 // the title, while a bare `npm run new` (e.g. the VS Code NPM Scripts button)
@@ -47,7 +46,6 @@ pubDate: "${today}"
 # updatedDate: "${today}"
 # heroImage: "./my-image.jpg"
 tags: []
-draft: true
 ---
 
 Write your opening here. The first paragraph is your hook.
@@ -55,6 +53,6 @@ Write your opening here. The first paragraph is your hook.
 
 writeFileSync(filePath, content);
 
-console.log(`Created draft: src/content/blog/${slug}.md`);
-console.log(`Preview at:    http://localhost:4321/articles/${slug}/  (run \`npm run dev\`)`);
-console.log(`Publish by setting \`draft: false\` in the frontmatter.`);
+console.log(`Created draft: src/content/essay-drafts/${slug}.md`);
+console.log(`Preview at:    http://localhost:4321/drafts/${slug}/  (run \`npm run dev\`)`);
+console.log(`Publish by moving the file into src/content/essays/.`);

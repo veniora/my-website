@@ -1,0 +1,30 @@
+---
+import { type CollectionEntry, render } from "astro:content";
+import EssayPost from "../../layouts/EssayPost.astro";
+import { getDraftPosts } from "../../utils/posts";
+
+export async function getStaticPaths() {
+	const posts = await getDraftPosts();
+	return posts.map((post, index) => ({
+		params: { slug: post.id },
+		props: {
+			post,
+			prev: posts[index + 1] ?? null,
+			next: posts[index - 1] ?? null,
+		},
+	}));
+}
+
+type Props = {
+	post: CollectionEntry<"drafts">;
+	prev: CollectionEntry<"drafts"> | null;
+	next: CollectionEntry<"drafts"> | null;
+};
+
+const { post, prev, next } = Astro.props;
+const { Content } = await render(post);
+---
+
+<EssayPost {...post.data} prev={prev} next={next}>
+  <Content />
+</EssayPost>
