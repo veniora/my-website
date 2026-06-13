@@ -14,8 +14,17 @@ type Props = CollectionEntry<"essays">["data"] & {
   next?: CollectionEntry<"essays"> | null;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, tags, draft, prev, next } =
-  Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  tags,
+  draft,
+  prev,
+  next,
+} = Astro.props;
 ---
 
 <html lang="en">
@@ -79,7 +88,9 @@ const { title, description, pubDate, updatedDate, heroImage, tags, draft, prev, 
         color: rgb(var(--gray));
         font-size: 0.9rem;
         text-decoration: none;
-        transition: border-color 0.15s ease, color 0.15s ease;
+        transition:
+          border-color 0.15s ease,
+          color 0.15s ease;
       }
       .nav-btn:hover {
         border-color: rgb(var(--gray));
@@ -113,7 +124,7 @@ const { title, description, pubDate, updatedDate, heroImage, tags, draft, prev, 
                 )
               }
             </div>
-            <h2>{title}</h2>
+            <h3>{title}</h3>
             <hr />
           </div>
           <slot />
@@ -125,12 +136,20 @@ const { title, description, pubDate, updatedDate, heroImage, tags, draft, prev, 
             )
           }
           <nav class="post-nav">
-            {prev && (
-              <a href={`/essays/${prev.id}/`} class="nav-btn">← Older</a>
-            )}
-            {next && (
-              <a href={`/essays/${next.id}/`} class="nav-btn">Newer →</a>
-            )}
+            {
+              prev && (
+                <a href={`/essays/${prev.id}/`} class="nav-btn">
+                  ← Older
+                </a>
+              )
+            }
+            {
+              next && (
+                <a href={`/essays/${next.id}/`} class="nav-btn">
+                  Newer →
+                </a>
+              )
+            }
           </nav>
         </div>
       </article>

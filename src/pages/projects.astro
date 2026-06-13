@@ -8,11 +8,11 @@ import { SITE_TITLE } from "../consts";
 // freely — anything in this array is rendered below.
 const projects = [
   {
-    name: "Example Project",
+    name: "ActionToday",
     blurb:
-      "A short description of what this is, who it's for, and why you're building it. Replace this with something real.",
+      "I think of this as a 'will do' list rather than a 'to do'. Here I set my intentions for each day about where I'll spend my time and energy. I'll succeed at them as long as I make the effort. You can't control the outcomes all the time but you cna take charge of your inputs. It pairs with a task manager rather than replacing it directly - who wants to compete in that crowded space? Give it a try for free and give me that feedback on what makes it better. I'm a sample of one currently.",
     status: "In progress",
-    link: "",
+    link: "https://actiontoday.app",
   },
 ];
 ---
@@ -41,14 +41,18 @@ const projects = [
               <div class="project-head">
                 <h2>
                   {project.link ? (
-                    <a href={project.link}>{project.name}</a>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {project.name}
+                    </a>
                   ) : (
                     project.name
                   )}
                 </h2>
-                {project.status && (
-                  <span class="status">{project.status}</span>
-                )}
+                {project.status && <span class="status">{project.status}</span>}
               </div>
               <p>{project.blurb}</p>
             </li>
