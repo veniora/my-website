@@ -4,12 +4,10 @@ import DraftBadge from "../components/DraftBadge.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
-import TagList from "../components/TagList.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { getPublishedPosts } from "../utils/posts";
 
 const posts = await getPublishedPosts();
-const [featured, ...recent] = posts.slice(0, 5);
 ---
 
 <!doctype html>
@@ -21,10 +19,10 @@ const [featured, ...recent] = posts.slice(0, 5);
     <Header />
     <main>
       <section class="intro">
-        <h1>Michael Janan</h1>
+        <!-- <h1>Michael Janan</h1> -->
         <p>
           Essays and notes on politics, science fiction, economics, and the
-          ideas in between. Thanks for stopping by.
+          ideas in between.
         </p>
       </section>
 
@@ -32,45 +30,19 @@ const [featured, ...recent] = posts.slice(0, 5);
         posts.length === 0 ? (
           <p>No posts yet — check back soon.</p>
         ) : (
-          <section class="feed">
-            <div class="feed-head">
-              <h2>Latest</h2>
-              <a href="/articles">All articles →</a>
-            </div>
-
-            {featured && (
-              <div class="featured">
-                <a class="featured-link" href={`/articles/${featured.id}/`}>
-                  <p class="date">
-                    <FormattedDate date={featured.data.pubDate} />
-                    <DraftBadge draft={featured.data.draft} />
-                  </p>
-                  <h3>{featured.data.title}</h3>
-                  <p class="excerpt">{featured.data.description}</p>
-                </a>
-                <div class="featured-tags">
-                  <TagList tags={featured.data.tags} />
-                </div>
-              </div>
-            )}
-
-            {recent.length > 0 && (
-              <ul class="more">
-                {recent.map((post) => (
-                  <li>
-                    <a href={`/articles/${post.id}/`}>
-                      <p class="date">
-                        <FormattedDate date={post.data.pubDate} />
-                        <DraftBadge draft={post.data.draft} />
-                      </p>
-                      <h4>{post.data.title}</h4>
-                      <p class="excerpt">{post.data.description}</p>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
+          <ul class="post-list">
+            {posts.map((post) => (
+              <li>
+                <time class="post-date">
+                  <FormattedDate date={post.data.pubDate} />
+                </time>
+                <span class="post-title">
+                  <a href={`/essays/${post.id}/`}>{post.data.title}</a>
+                  <DraftBadge draft={post.data.draft} />
+                </span>
+              </li>
+            ))}
+          </ul>
         )
       }
     </main>
@@ -80,89 +52,61 @@ const [featured, ...recent] = posts.slice(0, 5);
 
 <style>
   .intro {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
   }
   .intro h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
     margin-bottom: 0.25em;
   }
   .intro p {
-    font-size: 1.15rem;
-    color: rgb(var(--gray-dark));
-    margin: 0;
-  }
-
-  .feed-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    border-bottom: 1px solid rgb(var(--gray-light));
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .feed-head h2 {
-    margin: 0;
-    font-size: 1.4rem;
-  }
-  .feed-head a {
-    font-size: 0.9rem;
-    text-decoration: none;
-  }
-  .feed-head a:hover {
-    text-decoration: underline;
-  }
-
-  .date {
-    margin: 0;
     color: rgb(var(--gray));
-    font-size: 0.85rem;
-  }
-  .excerpt {
-    margin: 0.4em 0 0 0;
-    color: rgb(var(--gray-dark));
+    margin: 0;
+    font-size: 0.95rem;
   }
 
-  .featured {
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid rgb(var(--gray-light));
-    border-radius: 12px;
-    transition: 0.2s ease;
-  }
-  .featured:hover {
-    box-shadow: var(--box-shadow);
-  }
-  .featured-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-  .featured h3 {
-    margin: 0.3em 0;
-    color: rgb(var(--black));
-  }
-  .featured-tags {
-    margin-top: 1rem;
-  }
-
-  .more {
+  .post-list {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .more li {
+  .post-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.55rem 0;
     border-top: 1px solid rgb(var(--gray-light));
   }
-  .more li a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    padding: 1.25rem 0;
+  .post-list li:last-child {
+    border-bottom: 1px solid rgb(var(--gray-light));
   }
-  .more h4 {
-    margin: 0.2em 0;
+  .post-date {
+    color: rgb(var(--gray));
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 6.5rem;
+    font-family: ui-monospace, "Cascadia Code", "Courier New", monospace;
+  }
+  .post-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .post-title a {
     color: rgb(var(--black));
+    font-size: 1rem;
+    line-height: 1.4;
   }
-  .more li a:hover h4 {
-    color: var(--accent);
+  .post-title a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .post-list li {
+      flex-direction: column;
+      gap: 0.15rem;
+      padding: 0.75rem 0;
+    }
   }
 </style>

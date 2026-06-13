@@ -1,0 +1,140 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import DraftBadge from "../components/DraftBadge.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+import TagList from "../components/TagList.astro";
+import { SITE_TITLE } from "../consts";
+
+type Props = CollectionEntry<"essays">["data"] & {
+  prev?: CollectionEntry<"essays"> | null;
+  next?: CollectionEntry<"essays"> | null;
+};
+
+const { title, description, pubDate, updatedDate, heroImage, tags, draft, prev, next } =
+  Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={`${SITE_TITLE} | ${title}`} description={description} />
+    <style>
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+      }
+      .prose {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .title {
+        margin-bottom: 1em;
+        padding: 1em 0;
+        text-align: center;
+        line-height: 1;
+      }
+      .title h1 {
+        margin: 0 0 0.5em 0;
+      }
+      .date {
+        margin-bottom: 0.5em;
+        color: rgb(var(--gray));
+      }
+      .last-updated-on {
+        font-style: italic;
+      }
+      .post-tags {
+        margin-top: 2em;
+        padding-top: 1.5em;
+        border-top: 1px solid rgb(var(--gray-light));
+      }
+      .post-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgb(var(--gray-light));
+      }
+      .nav-btn {
+        padding: 0.45em 1.25em;
+        border: 1px solid rgb(var(--gray-light));
+        border-radius: 999px;
+        color: rgb(var(--gray));
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: border-color 0.15s ease, color 0.15s ease;
+      }
+      .nav-btn:hover {
+        border-color: rgb(var(--gray));
+        color: rgb(var(--black));
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <article>
+        <div class="hero-image">
+          {
+            heroImage && (
+              <Image width={1020} height={510} src={heroImage} alt="" />
+            )
+          }
+        </div>
+        <div class="prose">
+          <div class="title">
+            <div class="date">
+              <FormattedDate date={pubDate} />
+              <DraftBadge draft={draft} />
+              {
+                updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={updatedDate} />
+                  </div>
+                )
+              }
+            </div>
+            <h2>{title}</h2>
+            <hr />
+          </div>
+          <slot />
+          {
+            tags.length > 0 && (
+              <footer class="post-tags">
+                <TagList tags={tags} />
+              </footer>
+            )
+          }
+          <nav class="post-nav">
+            {prev && (
+              <a href={`/essays/${prev.id}/`} class="nav-btn">← Older</a>
+            )}
+            {next && (
+              <a href={`/essays/${next.id}/`} class="nav-btn">Newer →</a>
+            )}
+          </nav>
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>

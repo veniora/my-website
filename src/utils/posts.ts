@@ -1,6 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
-export type Post = CollectionEntry<'blog'>;
+export type Post = CollectionEntry<'essays'>;
 
 /**
  * In `astro dev` we surface drafts so you can preview how they'll render.
@@ -14,7 +14,7 @@ const includeDrafts = import.meta.env.DEV;
  */
 export async function getPublishedPosts(): Promise<Post[]> {
 	const posts = await getCollection(
-		'blog',
+		'essays',
 		({ data }) => includeDrafts || !data.draft,
 	);
 	return posts.sort(

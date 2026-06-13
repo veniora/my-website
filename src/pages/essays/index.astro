@@ -16,13 +16,12 @@ const description = "Everything I've written, newest first.";
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={`${SITE_TITLE} | Articles`} description={description} />
+    <BaseHead title={`${SITE_TITLE} | Essays`} description={description} />
   </head>
   <body>
     <Header />
     <main>
-      <h1>Articles</h1>
-      <p class="lede">{description}</p>
+      <h1>Essays</h1>
 
       {
         tags.length > 0 && (
@@ -37,18 +36,16 @@ const description = "Everything I've written, newest first.";
         posts.length === 0 ? (
           <p>No posts yet — check back soon.</p>
         ) : (
-          <ul class="posts">
+          <ul class="post-list">
             {posts.map((post) => (
               <li>
-                <a href={`/articles/${post.id}/`}>
-                  <p class="date">
-                    <FormattedDate date={post.data.pubDate} />
-                    <DraftBadge draft={post.data.draft} />
-                  </p>
-                  <h2>{post.data.title}</h2>
-                  <p class="excerpt">{post.data.description}</p>
-                </a>
-                <TagList tags={post.data.tags} />
+                <time class="post-date">
+                  <FormattedDate date={post.data.pubDate} />
+                </time>
+                <span class="post-title">
+                  <a href={`/essays/${post.id}/`}>{post.data.title}</a>
+                  <DraftBadge draft={post.data.draft} />
+                </span>
               </li>
             ))}
           </ul>
@@ -60,50 +57,60 @@ const description = "Everything I've written, newest first.";
 </html>
 
 <style>
-  .lede {
-    color: rgb(var(--gray-dark));
-    margin-top: 0;
-  }
   .browse {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.6em;
-    margin: 1.5rem 0 2.5rem 0;
+    margin-bottom: 2rem;
   }
   .browse span {
     color: rgb(var(--gray));
     font-size: 0.9rem;
   }
-  .posts {
+
+  .post-list {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .posts li {
-    padding: 1.5rem 0;
+  .post-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.55rem 0;
     border-top: 1px solid rgb(var(--gray-light));
   }
-  .posts li a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
+  .post-list li:last-child {
+    border-bottom: 1px solid rgb(var(--gray-light));
   }
-  .posts h2 {
-    margin: 0.2em 0;
-    font-size: 1.6rem;
-    color: rgb(var(--black));
-  }
-  .posts li a:hover h2 {
-    color: var(--accent);
-  }
-  .date {
-    margin: 0;
+  .post-date {
     color: rgb(var(--gray));
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 6.5rem;
+    font-family: ui-monospace, 'Cascadia Code', 'Courier New', monospace;
   }
-  .excerpt {
-    margin: 0.3em 0 0.8em 0;
-    color: rgb(var(--gray-dark));
+  .post-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .post-title a {
+    color: rgb(var(--black));
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  .post-title a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .post-list li {
+      flex-direction: column;
+      gap: 0.15rem;
+      padding: 0.75rem 0;
+    }
   }
 </style>

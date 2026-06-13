@@ -18,7 +18,7 @@ import HeaderLink from "./HeaderLink.astro";
     </button>
     <div class="internal-links" id="primary-nav">
       <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/articles">Articles</HeaderLink>
+      <HeaderLink href="/essays">Essays</HeaderLink>
       <HeaderLink href="/projects">Projects</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
     </div>
@@ -27,9 +27,9 @@ import HeaderLink from "./HeaderLink.astro";
 <style>
   header {
     margin: 0;
-    padding: 0 1em;
+    padding: 0 0.5em;
     background: rgb(var(--bg));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 10%);
+    border-bottom: 1px solid rgb(var(--gray-light));
   }
   h2 {
     margin: 0;
@@ -83,7 +83,9 @@ import HeaderLink from "./HeaderLink.astro";
     margin: 0 auto;
     background: rgb(var(--black));
     border-radius: 2px;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
   /* Animate bars into an X when open */
   .nav-toggle[aria-expanded="true"] .bar:nth-child(1) {

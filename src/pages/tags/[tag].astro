@@ -32,7 +32,7 @@ type Props = {
 };
 
 const { label, posts } = Astro.props;
-const description = `Articles tagged “${label}”.`;
+const description = `Essays tagged “${label}”.`;
 ---
 
 <!doctype html>
@@ -49,7 +49,7 @@ const description = `Articles tagged “${label}”.`;
         {
           posts.map((post) => (
             <li>
-              <a href={`/articles/${post.id}/`}>
+              <a href={`/essays/${post.id}/`}>
                 <p class="date">
                   <FormattedDate date={post.data.pubDate} />
                   <DraftBadge draft={post.data.draft} />
